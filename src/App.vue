@@ -1,21 +1,21 @@
 <template>
-  <ChartComp/>
-  <onlyChart/>
+  <ChartComp />
+  <onlyChart />
 </template>
 
 <script>
-
-import ChartComp from './components/ChartComp.vue'
-import onlyChart from './components/onlyChart.vue'
+import ChartComp from "./components/ChartComp.vue";
+import onlyChart from "./components/onlyChart.vue";
 
 export default {
-  data(){
-return{}
+  data() {
+    return {};
   },
   name: "App",
-  components:{
-    ChartComp,onlyChart
-  }
+  components: {
+    ChartComp,
+    onlyChart,
+  },
 };
 </script>
 
@@ -26,5 +26,13 @@ return{}
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+#container{
+  width: 500px;
+  
 }
 </style>
