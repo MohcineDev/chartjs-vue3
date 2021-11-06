@@ -1,28 +1,70 @@
 <template>
-  <div class="small">
-
-  <canvas id="myChart" width="100%"></canvas>
+  <div id="container">
+    <canvas id="myChart"></canvas>
   </div>
 </template>
 
 <script>
-import { Chart,  registerables } from "chart.js";
+import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
-
+//only chart js
 export default {
-  methods: {
-  
+  data() {
+    return {
+      countries: [],
+      countryandcount: [],
+    };
   },
-  mounted() {
-     const ctx = document.getElementById("myChart").getContext("2d");
+  created() {
+    //add register here just in case
+  },
+  methods: {
+    fetchData: async function () {
+      const data = await fetch("./chart.json");
+      const response = await data.json();
+
+      this.getContries(response);
+    },
+    getContries: function (truckers) {
+      //get truckers country
+      truckers.map((item) => this.countries.push(item.location));
+      this.getcountryandcount();
+    },
+    getcountryandcount: function () {
+      for (let i = 0; i < this.countries.length; i++) {
+        //first time the array is empty
+        if (this.countryandcount.length) {
+          let countryFound = false; //initialize the variable
+
+          for (let a = 0; a < this.countryandcount.length; a++) {
+            //if the country already exist add one to the count
+            if (this.countryandcount[a].country == this.countries[i]) {
+              countryFound = true;
+              this.countryandcount[a].count++;
+              break; ///if true break the loop
+            }
+          }
+          if (!countryFound) {
+            //if  the country dose not exist add it to the array
+            this.countryandcount.push({ country: this.countries[i], count: 1 });
+          }
+        } else {
+          //first time the array is empty
+          this.countryandcount.push({ country: this.countries[i], count: 1 });
+        }
+      }
+      this.drawChart();
+    },
+    drawChart: function () {
+      const ctx = document.getElementById("myChart").getContext("2d");
       const myChart = new Chart(ctx, {
         type: "doughnut",
         data: {
-          labels: ["Red", "Blue", "Yellow", "Green", "Purple"],
+          labels: [...this.countryandcount.map((item) => item.country)],
           datasets: [
             {
               label: "# of Votes",
-              data: [12, 19, 3, 5, 2],
+              data: [...this.countryandcount.map((item) => item.count)],
               backgroundColor: [
                 "rgb(255, 99, 132)",
                 "rgb(255, 159, 64)",
@@ -37,13 +79,12 @@ export default {
         },
         options: {},
       });
+    },
+  },
+  mounted() {
+    this.fetchData();
   },
 };
 </script>
 
-<style>
-#myChart{
-  
-}
 
-</style>

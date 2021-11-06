@@ -1,11 +1,11 @@
 <template>
-  <div class="small">
+  <div id="container">
     <DoughnutChart :chartData="testData" />
   </div>
 </template> 
 <script>
 import { DoughnutChart } from "vue-chart-3";
-
+//here using vue-chart-3
 import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
@@ -36,10 +36,4 @@ export default {
   },
 };
 </script>
-
-<style>
-.small {
-    max-width: 500px;
-    margin:auto;
-  }
-</style>
+ 
